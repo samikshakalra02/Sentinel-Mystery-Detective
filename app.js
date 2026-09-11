@@ -496,6 +496,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Hash navigation handler (e.g. from matrix.html or direct links)
   function handleHashNav() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam) {
+      const target = tabParam.startsWith('screen-') ? tabParam : `screen-${tabParam}`;
+      if (document.getElementById(target)) {
+        switchScreen(target);
+        return;
+      }
+    }
+
     const hash = window.location.hash.toLowerCase();
     const hashMap = {
       "#home": "screen-home",
