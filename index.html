@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SENTINEL-AI: Forensic Multi-Agent Crime Investigation Engine. Case Book 001: The Vanishing Aurora Diamond. Complete Bilingual English and Hindi.">
+  <title>SENTINEL // MYSTERY DETECTIVE ENGINE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f0ff'><path d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 2.18l7 3.12v4.7c0 4.54-3.14 8.78-7 9.88-3.86-1.1-7-5.34-7-9.88V6.3l7-3.12zm-1 5.82v6h2v-6h-2zm0 8v2h2v-2h-2z'/></svg>">
+  <script src="i18n.js"></script>
+</head>
+<body>
+
+  <!-- TOPBAR HEADER -->
+  <header class="topbar" id="app-header">
+    <div class="brand-wrapper">
+      <div class="brand-icon" style="background: linear-gradient(135deg, #f97316, #00f0ff);">
+        <svg viewBox="0 0 24 24" fill="#070a12" width="20" height="20">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 2.18l7 3.12v4.7c0 4.54-3.14 8.78-7 9.88-3.86-1.1-7-5.34-7-9.88V6.3l7-3.12zm-1 5.82v6h2v-6h-2zm0 8v2h2v-2h-2z"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1 data-i18n="brandTitle">SENTINEL // MYSTERY DETECTIVE</h1>
+        <div class="brand-subtitle" data-i18n="brandSubtitle">MULTI-AGENT CRIME INVESTIGATION ENGINE</div>
+      </div>
+    </div>
+
+    <!-- Telemetry Badges -->
+    <div class="topbar-telemetry">
+      <span class="mystery-badge badge-fact" data-i18n="caseBadge">CASE #001: THE VANISHING AURORA DIAMOND</span>
+      <span class="mystery-badge badge-smoking" data-i18n="statusBadge">4-MIN BLACKOUT • UNBROKEN VITRINE</span>
+    </div>
+
+    <!-- Navigation Actions -->
+    <div class="topbar-actions" style="display: flex; align-items: center; gap: 10px;">
+      <!-- Link to Matrix Page (Intact) -->
+      <a class="btn btn-secondary" href="matrix.html" id="btn-open-matrix" style="border-color: rgba(0, 240, 255, 0.5); color: var(--neon-cyan); text-decoration: none; display: flex; align-items: center; gap: 6px;" title="Open Holographic Evidence Matrix Board">
+        <span>⚡</span>
+        <span data-i18n="btnMatrix">⚡ Holographic Matrix Board</span>
+      </a>
+
+      <!-- 100% Bilingual Language Switcher -->
+      <button class="btn btn-secondary" id="btn-toggle-lang" style="border-color: #f97316; color: #f97316; font-weight: 700; display: flex; align-items: center; gap: 6px;" title="Switch Language (English / हिन्दी)">
+        🌐 <span>हिन्दी</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN GRADIO LAYOUT CONTAINER -->
+  <main class="gradio-app-wrapper">
+
+    <!-- GRADIO PILL TABS BAR -->
+    <nav class="gradio-tabs-bar" id="gradio-tabs-bar" aria-label="Mystery Detective Navigation">
+      <button class="gradio-tab-btn active" data-tab="screen-home" id="tab-btn-home">
+        <span data-i18n="tabHome">🏠 Case Briefing</span>
+      </button>
+      <button class="gradio-tab-btn" data-tab="screen-agent1" id="tab-btn-agent1">
+        <span data-i18n="tabAgent1">⏱️ 1. Timeline</span>
+      </button>
+      <button class="gradio-tab-btn" data-tab="screen-agent2" id="tab-btn-agent2">
+        <span data-i18n="tabAgent2">🔍 2. Clues & Evidence</span>
+      </button>
+      <button class="gradio-tab-btn" data-tab="screen-agent3" id="tab-btn-agent3">
+        <span data-i18n="tabAgent3">👥 3. Suspects</span>
+      </button>
+      <button class="gradio-tab-btn" data-tab="screen-agent4" id="tab-btn-agent4">
+        <span data-i18n="tabAgent4">❓ 4. Skeptic Challenger</span>
+      </button>
+      <button class="gradio-tab-btn" data-tab="screen-agent5" id="tab-btn-agent5">
+        <span data-i18n="tabAgent5">⚖️ 5. Final Verdict</span>
+      </button>
+    </nav>
+
+    <!-- SCREEN 0: HOMEPAGE (CASE BRIEFING) -->
+    <section class="gradio-screen active" id="screen-home">
+      <div class="gradio-block">
+        <div class="gradio-block-header">
+          <div>
+            <h2 class="gradio-block-title" data-i18n="homeTitle">The Mystery of the Vanishing Aurora Diamond</h2>
+            <p class="gradio-block-subtitle" data-i18n="homeSubtitle">Northbridge Museum Grand Gallery • Critical 4-Minute Blackout Window</p>
+          </div>
+          <span class="mystery-badge badge-smoking" data-i18n="statusBadge">4-MIN BLACKOUT • UNBROKEN VITRINE</span>
+        </div>
+
+        <!-- Crime Snapshot Grid -->
+        <h3 style="font-size: 13px; color: var(--neon-cyan); font-family: var(--font-mono); text-transform: uppercase; margin-top: 10px;" data-i18n="incidentBoxTitle">Crime Scene Snapshot</h3>
+        <div class="snapshot-grid">
+          <div class="snapshot-card">
+            <span class="snapshot-label" data-i18n="snapshotTimeLabel">Time of Crime:</span>
+            <span class="snapshot-value" data-i18n="snapshotTimeVal">8:20 PM – 8:24 PM (4-minute blackout)</span>
+          </div>
+          <div class="snapshot-card">
+            <span class="snapshot-label" data-i18n="snapshotLocLabel">Location:</span>
+            <span class="snapshot-value" data-i18n="snapshotLocVal">Northbridge Museum, Display Case #04</span>
+          </div>
+          <div class="snapshot-card">
+            <span class="snapshot-label" data-i18n="snapshotItemLabel">Stolen Item:</span>
+            <span class="snapshot-value" data-i18n="snapshotItemVal">Aurora Diamond (Estimated Value: $500,000)</span>
+          </div>
+          <div class="snapshot-card">
+            <span class="snapshot-label" data-i18n="snapshotGlassLabel">Display Condition:</span>
+            <span class="snapshot-value" data-i18n="snapshotGlassVal">Glass Unbroken • Electronic Lock Card Swipe at 8:23 PM</span>
+          </div>
+          <div class="snapshot-card">
+            <span class="snapshot-label" data-i18n="snapshotSuspectsLabel">Persons Present:</span>
+            <span class="snapshot-value" data-i18n="snapshotSuspectsVal">4 Individuals inside museum during blackout</span>
+          </div>
+        </div>
+
+        <!-- Plain English / Hindi Layman Briefing -->
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 18px; margin: 18px 0;">
+          <h3 style="font-size: 14px; font-weight: 700; color: #f97316; margin-bottom: 8px; font-family: var(--font-display);" data-i18n="briefingTitle">Detective Briefing (Layman Summary)</h3>
+          <p style="color: #cbd5e1; font-size: 13px; line-height: 1.6; margin-bottom: 10px;" data-i18n="briefingP1">At 8:20 PM, Northbridge Museum experienced an unexpected power blackout lasting exactly 4 minutes. When power returned at 8:24 PM, the priceless Aurora Diamond was missing from display case #04.</p>
+          <p style="color: #cbd5e1; font-size: 13px; line-height: 1.6;" data-i18n="briefingP2">The vitrine glass was completely unbroken. The battery-backed lock recorded an authorized keycard swipe at 8:23 PM in total darkness. Four individuals were inside the building. A single blue velvet microfiber trace holds the key to the mystery.</p>
+        </div>
+
+        <!-- Action CTAs -->
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px;">
+          <button class="btn btn-primary" id="btn-start-investigation" style="background: #f97316; border-color: #f97316; color: #fff; font-weight: 700; padding: 12px 24px; font-size: 14px; border-radius: 8px; cursor: pointer; box-shadow: 0 0 16px rgba(249, 115, 22, 0.4);">
+            <span data-i18n="btnStartAgents">🕵️ Start 5-Agent Investigation</span>
+          </button>
+          <a href="matrix.html" class="btn btn-secondary" style="border-color: rgba(0, 240, 255, 0.4); color: var(--neon-cyan); text-decoration: none; padding: 12px 20px; font-size: 14px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;">
+            <span data-i18n="btnExploreMatrix">⚡ Explore Holographic Evidence Matrix</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 1: AGENT 1 - TIMELINE DETECTIVE -->
+    <section class="gradio-screen" id="screen-agent1">
+      <div class="gradio-block">
+        <div class="gradio-block-header">
+          <div>
+            <h2 class="gradio-block-title" data-i18n="a1Title">Agent 1: Timeline Detective</h2>
+            <p class="gradio-block-subtitle" data-i18n="a1Subtitle">Chronological reconstruction of the critical 4-minute blackout window</p>
+          </div>
+          <span class="mystery-badge badge-smoking" data-i18n="a1WindowLabel">CRITICAL CRIME WINDOW: 8:20 PM – 8:24 PM (4 MINUTES)</span>
+        </div>
+
+        <div style="background: rgba(249, 115, 22, 0.08); border: 1px solid rgba(249, 115, 22, 0.25); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 12px; color: #fed7aa;" data-i18n="a1WindowDesc">
+          The theft took place in total darkness. Electronic lock memory registered case #04 unlocking at 8:23 PM.
+        </div>
+
+        <!-- Dynamic Timeline List -->
+        <div class="gradio-timeline-list" id="agent1-timeline-container">
+          <!-- Populated by JavaScript from SENTINEL_I18N -->
+        </div>
+
+        <!-- Takeaway Banner -->
+        <div class="takeaway-banner">
+          <strong data-i18n="a1TakeawayTitle">Timeline Detective Conclusion:</strong>
+          <p data-i18n="a1TakeawayText">The theft occurred at exactly 8:23 PM during the blackout. Theo Park is fully excluded by live stage cameras. Lena Ortiz was in the basement restarting the generator, and Sofia Reed was speaking with guests in the lobby. Only Arjun Vale has no alibi for 8:23 PM.</p>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+          <button class="btn btn-primary btn-next-agent" data-next="screen-agent2" style="background: #f97316; border-color: #f97316; color: #fff; font-weight: 700; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+            <span data-i18n="btnNextAgent2">Next: Agent 2 (Clues) →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: AGENT 2 - EVIDENCE SPECIALIST -->
+    <section class="gradio-screen" id="screen-agent2">
+      <div class="gradio-block">
+        <div class="gradio-block-header">
+          <div>
+            <h2 class="gradio-block-title" data-i18n="a2Title">Agent 2: Evidence Specialist</h2>
+            <p class="gradio-block-subtitle" data-i18n="a2Subtitle">Separating verified physical facts from unverified statements (Rule 2)</p>
+          </div>
+          <span class="mystery-badge badge-fact" data-i18n="exhibitsBadge">EXHIBITS A – G</span>
+        </div>
+
+        <!-- Clues Grid -->
+        <div class="clues-grid" id="agent2-clues-container">
+          <!-- Populated by JavaScript from SENTINEL_I18N -->
+        </div>
+
+        <!-- Takeaway Banner -->
+        <div class="takeaway-banner">
+          <strong data-i18n="a2TakeawayTitle">Evidence Specialist Conclusion:</strong>
+          <p data-i18n="a2TakeawayText">The unbroken glass confirms an inside job using an authorized card. The blue velvet fibers inside Arjun's folder are the decisive physical evidence connecting his folder to the display cushion.</p>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+          <button class="btn btn-primary btn-next-agent" data-next="screen-agent3" style="background: #f97316; border-color: #f97316; color: #fff; font-weight: 700; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+            <span data-i18n="btnNextAgent3">Next: Agent 3 (Suspects) →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: AGENT 3 - SUSPECT PROFILER -->
+    <section class="gradio-screen" id="screen-agent3">
+      <div class="gradio-block">
+        <div class="gradio-block-header">
+          <div>
+            <h2 class="gradio-block-title" data-i18n="a3Title">Agent 3: Suspect Profiler</h2>
+            <p class="gradio-block-subtitle" data-i18n="a3Subtitle">Uniform evaluation of all 4 individuals in the building (Rule 5)</p>
+          </div>
+          <span class="mystery-badge badge-fact" data-i18n="suspectsBadge">4 INDIVIDUALS EVALUATED</span>
+        </div>
+
+        <!-- Suspects Grid -->
+        <div class="suspects-grid" id="agent3-suspects-container">
+          <!-- Populated by JavaScript from SENTINEL_I18N -->
+        </div>
+
+        <!-- Takeaway Banner -->
+        <div class="takeaway-banner">
+          <strong data-i18n="a3TakeawayTitle">Suspect Profiler Conclusion:</strong>
+          <p data-i18n="a3TakeawayText">Theo, Lena, and Sofia have ironclad, independently verified alibis during the blackout. Only Arjun Vale has no alibi, possessed keycard access at 8:23 PM, and carried physical cushion fibers in his folder.</p>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+          <button class="btn btn-primary btn-next-agent" data-next="screen-agent4" style="background: #f97316; border-color: #f97316; color: #fff; font-weight: 700; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+            <span data-i18n="btnNextAgent4">Next: Agent 4 (Skeptic) →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: AGENT 4 - SKEPTIC CHALLENGER -->
+    <section class="gradio-screen" id="screen-agent4">
+      <div class="gradio-block">
+        <div class="gradio-block-header">
+          <div>
+            <h2 class="gradio-block-title" data-i18n="a4Title">Agent 4: Skeptic Challenger</h2>
+            <p class="gradio-block-subtitle" data-i18n="a4Subtitle">Adversarial stress-testing of the evidence before indictment (Rule 6)</p>
+          </div>
+          <span class="mystery-badge badge-inference" data-i18n="doubtsBadge">3 ADVERSARIAL DOUBTS</span>
+        </div>
+
+        <!-- Skeptic Q&A List -->
+        <div class="skeptic-list" id="agent4-skeptic-container">
+          <!-- Populated by JavaScript from SENTINEL_I18N -->
+        </div>
+
+        <!-- Takeaway Banner -->
+        <div class="takeaway-banner">
+          <strong data-i18n="a4TakeawayTitle">Skeptic Challenger Conclusion:</strong>
+          <p data-i18n="a4TakeawayText">Digital keycard logs alone are legally vulnerable (Rule 4). The prosecution case relies entirely on the blue velvet fibers inside Arjun's folder. Without those fibers, the case is inconclusive.</p>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+          <button class="btn btn-primary btn-next-agent" data-next="screen-agent5" style="background: #f97316; border-color: #f97316; color: #fff; font-weight: 700; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+            <span data-i18n="btnNextAgent5">Next: Agent 5 (Final Verdict) →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 5: AGENT 5 - FINAL VERDICT & WHAT-IF LAB -->
+    <section class="gradio-screen" id="screen-agent5">
+      <div class="gradio-block">
+        <div class="gradio-block-header">
+          <div>
+            <h2 class="gradio-block-title" data-i18n="a5Title">Agent 5: Lead Investigator Verdict</h2>
+            <p class="gradio-block-subtitle" data-i18n="a5Subtitle">Synthesis of facts, probability calculation, and human investigator review</p>
+          </div>
+          <span class="mystery-badge badge-smoking" id="verdict-status-badge" data-i18n="verdictStatusVal">🟢 GUILTY BEYOND REASONABLE DOUBT — ARREST WARRANT READY</span>
+        </div>
+
+        <!-- Verdict Hero Card (85% AI-Decided Probability) -->
+        <div class="verdict-hero-card">
+          <div class="verdict-target-row">
+            <div>
+              <span class="snapshot-label" data-i18n="verdictTargetLabel">Primary Culprit:</span>
+              <div class="verdict-culprit-title" data-i18n="verdictTargetName">Arjun Vale (Senior Archivist)</div>
+            </div>
+            <div id="verdict-prob-badge" class="verdict-prob-badge" data-i18n="verdictConfidenceVal">85% Decided Probability</div>
+          </div>
+          <p id="verdict-summary-text" data-i18n="verdictSummary" style="color: #e2e8f0; font-size: 13px; line-height: 1.6; margin: 0;">
+            Arjun Vale is decided as the culprit with 85% probability by the AI forensic engine. The vitrine was opened at 8:23 PM using his card in total darkness with unbroken glass. Microscopic blue velvet fibers matching the display cushion were recovered inside his catalogue folder at 8:25 PM. All 3 alternative suspects are 100% physically excluded. The evidence satisfies the legal standard for criminal indictment.
+          </p>
+        </div>
+
+        <!-- Suspect Elimination Probability Breakdown -->
+        <div class="conviction-bar-container">
+          <div style="font-weight: 700; color: #f8fafc; font-size: 13px; font-family: var(--font-display);" data-i18n="matrixHeading">Suspect Elimination Probability Breakdown:</div>
+          <div class="conviction-bar-row">
+            <div class="conviction-bar-meta">
+              <span id="prob-arjun-text" data-i18n="probArjun" style="color: #f87171; font-weight: 600;">Arjun Vale: 85% (AI-Decided Primary Culprit)</span>
+              <strong id="arjun-conviction-pct" style="color: #ef4444;">85%</strong>
+            </div>
+            <div class="conviction-bar-track">
+              <div class="conviction-bar-fill fill-guilty" id="arjun-conviction-fill" style="width: 85%;"></div>
+            </div>
+          </div>
+          <div class="conviction-bar-row">
+            <div class="conviction-bar-meta">
+              <span id="prob-lena-text" data-i18n="probLena" style="color: #38bdf8;">Lena Ortiz: 8% (Low Residual Risk — Bootprint & Breaker Access)</span>
+              <strong id="lena-conviction-pct" style="color: #38bdf8;">8%</strong>
+            </div>
+            <div class="conviction-bar-track">
+              <div class="conviction-bar-fill fill-cleared" id="lena-conviction-fill" style="width: 8%; background: #0284c7;"></div>
+            </div>
+          </div>
+          <div class="conviction-bar-row">
+            <div class="conviction-bar-meta">
+              <span id="prob-sofia-text" data-i18n="probSofia" style="color: #2dd4bf;">Sofia Reed: 4% (Minimal Risk — Witness Alibi Margin)</span>
+              <strong id="sofia-conviction-pct" style="color: #2dd4bf;">4%</strong>
+            </div>
+            <div class="conviction-bar-track">
+              <div class="conviction-bar-fill fill-cleared" id="sofia-conviction-fill" style="width: 4%; background: #0d9488;"></div>
+            </div>
+          </div>
+          <div class="conviction-bar-row">
+            <div class="conviction-bar-meta">
+              <span id="prob-theo-text" data-i18n="probTheo" style="color: #34d399;">Theo Park: 3% (Near-Zero Risk — Live Broadcast Telemetry)</span>
+              <strong id="theo-conviction-pct" style="color: #10b981;">3%</strong>
+            </div>
+            <div class="conviction-bar-track">
+              <div class="conviction-bar-fill fill-cleared" id="theo-conviction-fill" style="width: 3%; background: #10b981;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Reasoning Flowchart (inline HTML/CSS) -->
+        <div class="verdict-flowchart-wrap">
+          <div class="vf-header">
+            <span class="vf-title" data-i18n="diagramTitle">🔬 AI Decision Reasoning Flowchart</span>
+            <span class="vf-formula" data-i18n-html="vfFormula">25% Base &nbsp;+&nbsp; 30% Alibis &nbsp;+&nbsp; 18% Lock &nbsp;+&nbsp; 15% Fibers &nbsp;−&nbsp; 3% Margin &nbsp;= &nbsp;<strong style="color:#f97316;">85%</strong></span>
+          </div>
+
+          <!-- Row 1: Crime Genesis -->
+          <div class="vf-row">
+            <div class="vf-node vf-genesis">
+              <div class="vf-node-badge" data-i18n="vfBadgeIncident">INCIDENT</div>
+              <div class="vf-node-icon">🏛️</div>
+              <div class="vf-node-title" data-i18n="vfGenTitle">Crime Genesis — 8:20 PM</div>
+              <div class="vf-node-sub" data-i18n="vfGenSub">Northbridge Museum · Case #04 · 4-min blackout · Glass unbroken</div>
+            </div>
+          </div>
+
+          <!-- Connector -->
+          <div class="vf-connector"><div class="vf-line"></div><div class="vf-arrow-label" data-i18n="diagramBranchesLabel">Evidence Branches</div><div class="vf-line"></div></div>
+
+          <!-- Row 2: 3 branches -->
+          <div class="vf-branches">
+            <div class="vf-node vf-branch vf-alibi">
+              <div class="vf-node-badge badge-teal" data-i18n="vfBadgeAlibi">+30% ALIBIS</div>
+              <div class="vf-node-icon">👥</div>
+              <div class="vf-node-title" data-i18n="dNode2Title">Alibi Elimination</div>
+              <div class="vf-node-sub" data-i18n="vfAlibiSub">Theo on live TV · Lena in basement · Sofia with 3 witnesses → Only Arjun unaccounted</div>
+            </div>
+            <div class="vf-node vf-branch vf-lock">
+              <div class="vf-node-badge badge-cyan" data-i18n="vfBadgeLock">+18% LOCK LOG</div>
+              <div class="vf-node-icon">🔑</div>
+              <div class="vf-node-title" data-i18n="dNode3Title">Electronic Lock Telemetry</div>
+              <div class="vf-node-sub" data-i18n="vfLockSub">Arjun's keycard logged at 8:23 PM in total darkness · Vitrine opened from inside</div>
+            </div>
+            <div class="vf-node vf-branch vf-fibers" id="diagram-node-fibers">
+              <div class="vf-node-badge badge-amber" id="diagram-badge-fibers" data-i18n="vfBadgeFibers">+15% PHYSICAL</div>
+              <div class="vf-node-icon">🔬</div>
+              <div class="vf-node-title" data-i18n="dNode4Title">Smoking Gun — Velvet Fibers</div>
+              <div class="vf-node-sub" id="diagram-sub-fibers" data-i18n="vfFibersSub">Exhibit E: Blue velvet fibers from display cushion found in Arjun's folder · 8:25 PM photo proof</div>
+            </div>
+          </div>
+
+          <!-- Connector -->
+          <div class="vf-connector"><div class="vf-line"></div><div class="vf-arrow-label" data-i18n="diagramAuditLabel">Synthesis &amp; Adversarial Audit</div><div class="vf-line"></div></div>
+
+          <!-- Row 3: Skeptic + Verdict side by side -->
+          <div class="vf-bottom">
+            <div class="vf-node vf-skeptic">
+              <div class="vf-node-badge badge-orange" data-i18n="vfBadgeSkeptic">−3% DISCOUNT</div>
+              <div class="vf-node-icon">⚖️</div>
+              <div class="vf-node-title" data-i18n="dNode5Title">Adversarial Margin</div>
+              <div class="vf-node-sub" data-i18n="vfSkepticSub">Arjun claims card was left in jacket · Touch-DNA pending → minor credential uncertainty</div>
+            </div>
+            <div class="vf-verdict-arrow">▶</div>
+            <div class="vf-node vf-verdict" id="diagram-node-verdict">
+              <div class="vf-node-badge badge-verdict" id="diagram-verdict-badge" data-i18n="vfBadgeVerdict">85% AI PROBABILITY</div>
+              <div class="vf-node-icon">🎯</div>
+              <div class="vf-node-title" id="diagram-verdict-sub" data-i18n="dNode6Title">AI Decision Convergence</div>
+              <div class="vf-node-sub" id="diagram-verdict-desc" data-i18n="vfVerdictSub">GUILT ESTABLISHED · Arrest &amp; Search Warrant Authorized · Evidence Standard Met</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Unshakable Pillars of High-Conviction Proof -->
+        <div style="margin-top: 10px;">
+          <h3 style="font-size: 14px; font-weight: 700; color: #f97316; font-family: var(--font-display); margin-bottom: 8px;" data-i18n="pillarsHeading">4 Unshakable Pillars of High-Conviction Proof:</h3>
+          <div class="pillars-grid">
+            <div class="pillar-card">
+              <strong data-i18n="pillar1Title">1. 100% Physical Elimination of Other Suspects</strong>
+              <p data-i18n="pillar1Desc">Theo Park was continuously on stage camera, Lena Ortiz was in the basement restarting the generator, and Sofia Reed was in the lobby with 3 witnesses. Arjun was the only person with opportunity.</p>
+            </div>
+            <div class="pillar-card">
+              <strong data-i18n="pillar2Title">2. Vitrine Intact & Authorized Lock Scan</strong>
+              <p data-i18n="pillar2Desc">The vitrine glass was completely unbroken. The battery-backed lock registered an authorized keycard scan at exactly 8:23 PM in blackout darkness, ruling out forced entry.</p>
+            </div>
+            <div class="pillar-card">
+              <strong data-i18n="pillar3Title">3. Smoking Gun Physical Velvet Fibers</strong>
+              <p data-i18n="pillar3Desc">Microscopic blue velvet fibers from the display cushion were recovered inside Arjun's folder photographed at 8:25 PM, directly establishing physical custody of the diamond.</p>
+            </div>
+            <div class="pillar-card">
+              <strong data-i18n="pillar4Title">4. Stolen Jacket Defense Factually Refuted</strong>
+              <p data-i18n="pillar4Desc">Corridor logs confirm zero external entries into the archive, and the 4-minute blackout window leaves zero opportunity for an unknown third party.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive What-If Scenario Lab -->
+        <div class="whatif-box">
+          <strong data-i18n="whatIfHeading" style="color: var(--neon-cyan); font-size: 14px;">🧪 Interactive What-If Experiment</strong>
+          <p data-i18n="whatIfSubheading" style="color: #94a3b8; font-size: 12px; margin: 0;">Toggle the key physical evidence to see how confidence and legal viability change in real-time:</p>
+          
+          <label class="whatif-toggle-row">
+            <input type="checkbox" id="toggle-whatif-fibers" class="whatif-input" style="display: none;">
+            <span class="whatif-switch"></span>
+            <span data-i18n="whatIfToggleLabel" style="font-size: 13px; font-weight: 600; color: #f8fafc;">Remove Evidence E (Blue Velvet Fibers from Folder)</span>
+          </label>
+
+          <div id="whatif-dynamic-result" class="whatif-result-text">
+            <!-- Dynamically populated based on toggle state -->
+          </div>
+        </div>
+
+        <!-- 3 Mandatory Verifications -->
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 18px; margin: 18px 0;">
+          <h4 data-i18n="stepsTitle" style="color: #f97316; font-size: 13px; font-weight: 700; margin-bottom: 12px; font-family: var(--font-display);">3 Mandatory Verifications Before Police Indictment (Rule 9):</h4>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="border-left: 2px solid var(--neon-cyan); padding-left: 12px;">
+              <strong data-i18n="step1Title" style="font-size: 12px; color: #f8fafc;">1. Touch-DNA & Fingerprints on Access Card</strong>
+              <p data-i18n="step1Desc" style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Forensic swab of the keycard to verify whether Arjun or an accomplice physically touched it.</p>
+            </div>
+            <div style="border-left: 2px solid var(--neon-cyan); padding-left: 12px;">
+              <strong data-i18n="step2Title" style="font-size: 12px; color: #f8fafc;">2. Archive Hallway CCTV Review</strong>
+              <p data-i18n="step2Desc" style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Check archive corridor camera logs before 8:20 PM to verify if anyone entered and touched Arjun's jacket.</p>
+            </div>
+            <div style="border-left: 2px solid var(--neon-cyan); padding-left: 12px;">
+              <strong data-i18n="step3Title" style="font-size: 12px; color: #f8fafc;">3. Chemical Dye Spectrometry on Fibers</strong>
+              <p data-i18n="step3Desc" style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Perform laboratory spectrometry to confirm 100% match between folder fibers and display cushion.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Human Review Logger -->
+        <div style="background: rgba(17, 24, 39, 0.9); border: 1px solid #374151; border-radius: 10px; padding: 18px;">
+          <h4 data-i18n="humanReviewTitle" style="color: #f8fafc; font-size: 13px; font-weight: 700; margin-bottom: 10px; font-family: var(--font-display);">Record Your Determination as Lead Investigator:</h4>
+          <div class="decision-btn-group">
+            <button id="btn-decision-accept" class="decision-btn accept" data-i18n="btnAccept">✓ Accept AI Verdict</button>
+            <button id="btn-decision-revise" class="decision-btn revise" data-i18n="btnRevise">✎ Revise / Hold</button>
+            <button id="btn-decision-reject" class="decision-btn reject" data-i18n="btnReject">✗ Reject AI Verdict</button>
+          </div>
+          <div id="decision-feedback-note" class="decision-feedback" data-i18n="notePending">
+            Awaiting your review. Click an option above to record decision.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

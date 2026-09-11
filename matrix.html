@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>BUREAU//AI — EVIDENCE MATRIX // LIVE HARNESS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+    @keyframes dash {
+      to { stroke-dashoffset: -40; }
+    }
+    @keyframes nodePulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.2); }
+      50% { box-shadow: 0 0 35px rgba(0, 240, 255, 0.8), inset 0 0 18px rgba(0, 240, 255, 0.4); }
+    }
+    .node-highlighted {
+      animation: nodePulseGlow 1.2s infinite ease-in-out !important;
+      border: 1.5px solid #00f0ff !important;
+      z-index: 45 !important;
+    }
+    .laser-tether {
+      transition: stroke-dashoffset 0.1s linear;
+    }
+    .cursor-grab { cursor: grab; }
+    .cursor-grabbing { cursor: grabbing !important; user-select: none; }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed": "#291800",
+            "surface-container-lowest": "#0a0e15",
+            "tertiary-container": "#65f2b5",
+            "on-tertiary-container": "#006d4a",
+            "on-error": "#690005",
+            "surface-tint": "#00dbe9",
+            "on-surface": "#dfe2ed",
+            "tertiary-fixed-dim": "#4edea3",
+            "outline-variant": "#3b494b",
+            "secondary-fixed": "#ffddb1",
+            "on-secondary": "#442b00",
+            "surface-container": "#1c2027",
+            "on-primary-container": "#006970",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-primary": "#00363a",
+            "on-secondary-container": "#5b3b00",
+            "on-surface-variant": "#b9cacb",
+            "error-container": "#93000a",
+            "on-primary-fixed": "#002022",
+            "primary-container": "#00f0ff",
+            "surface-container-highest": "#31353d",
+            "on-primary-fixed-variant": "#004f54",
+            "surface-bright": "#353941",
+            "surface-dim": "#0f131b",
+            "outline": "#849495",
+            "error": "#ffb4ab",
+            "on-background": "#dfe2ed",
+            "on-tertiary-fixed": "#002113",
+            "secondary": "#ffbd58",
+            "primary-fixed-dim": "#00dbe9",
+            "primary": "#dbfcff",
+            "tertiary": "#d8ffe7",
+            "on-tertiary": "#003824",
+            "surface-container-high": "#262a32",
+            "inverse-primary": "#006970",
+            "inverse-on-surface": "#2d3038",
+            "surface-variant": "#31353d",
+            "primary-fixed": "#7df4ff",
+            "secondary-fixed-dim": "#ffba4b",
+            "secondary-container": "#ea9f00",
+            "tertiary-fixed": "#6ffbbe",
+            "inverse-surface": "#dfe2ed",
+            "background": "#0f131b",
+            "on-secondary-fixed-variant": "#624000",
+            "surface-container-low": "#181c23",
+            "surface": "#0f131b",
+            "on-error-container": "#ffdad6"
+          },
+          "fontFamily": {
+            "headline-lg": ["Space Grotesk", "Noto Sans Devanagari"],
+            "label-lg": ["JetBrains Mono", "Noto Sans Devanagari"],
+            "body-md": ["Geist", "Noto Sans Devanagari", "sans-serif"],
+            "headline-xl": ["Space Grotesk", "Noto Sans Devanagari"],
+            "headline-md": ["Space Grotesk", "Noto Sans Devanagari"],
+            "label-md": ["JetBrains Mono", "Noto Sans Devanagari"]
+          }
+        }
+      }
+    };
+  </script>
+  <script src="i18n.js"></script>
+</head>
+<body class="bg-surface font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container">
+
+<!-- TOPBAR HEADER -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
+  <div class="h-20 w-full px-6 md:px-12 flex items-center justify-between">
+    <div class="flex items-center gap-4 md:gap-6">
+      <a href="index.html" class="flex items-center gap-2 group cursor-pointer" title="Return to Sentinel-AI Engine">
+        <div class="w-2.5 h-2.5 rounded-sm bg-primary-container animate-pulse shadow-[0_0_8px_#00f0ff]"></div>
+        <span class="font-headline-md text-headline-md text-primary uppercase tracking-wider group-hover:text-primary-fixed transition-colors">BUREAU//AI</span>
+      </a>
+      <div class="flex items-center gap-1 px-3 py-1 rounded bg-surface-container-low border border-outline-variant/30">
+        <span class="w-2 h-2 rounded-full bg-secondary"></span>
+        <span class="font-label-sm text-secondary uppercase font-bold" id="matrix-case-badge">CASE #001</span>
+        <span class="font-label-sm text-on-surface-variant/70" id="matrix-case-subtag">[AURORA DIAMOND]</span>
+      </div>
+      <div class="hidden lg:flex items-center gap-2 font-label-sm text-on-surface-variant">
+        <span class="w-2 h-2 rounded-full bg-tertiary-container inline-block"></span>
+        <span id="matrix-status-tag">EVIDENCE GROUNDED // ZERO HALLUCINATION</span>
+      </div>
+    </div>
+
+    <!-- Navigation Hub linked back to Main Application -->
+    <nav class="hidden md:flex items-center gap-1 bg-surface-container-lowest p-1 rounded-lg border border-outline-variant/20">
+      <a class="px-3 py-1.5 font-label-md text-on-surface-variant hover:text-on-surface transition-colors rounded" href="index.html#dossier" id="nav-dossier">01. Dossier</a>
+      <a class="px-3 py-1.5 font-label-md text-on-surface-variant hover:text-on-surface transition-colors rounded" href="index.html#neural-agents" id="nav-agents">02. Agents</a>
+      <a class="px-3 py-1.5 font-label-md text-on-surface-variant hover:text-on-surface transition-colors rounded" href="index.html#clues" id="nav-clues">03. Clues</a>
+      <a class="px-3 py-1.5 font-label-md bg-surface-container-highest text-primary shadow-[inset_0_-2px_0_#00f0ff] rounded font-semibold" href="matrix.html" id="nav-matrix">04. Matrix ⚡</a>
+      <a class="px-3 py-1.5 font-label-md text-on-surface-variant hover:text-on-surface transition-colors rounded" href="index.html#verdict" id="nav-verdict">05. Verdict</a>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <!-- Language Switcher Toggle Button -->
+      <button id="btn-toggle-lang-matrix" onclick="toggleMatrixLang()" class="px-3 py-1.5 rounded bg-surface-container-low border border-primary/40 font-label-sm text-primary hover:bg-primary/20 transition-all cursor-pointer font-bold flex items-center gap-1">
+        <span>🌐</span>
+        <span id="matrix-lang-label">हिन्दी</span>
+      </button>
+
+      <a href="index.html" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer hover:shadow-[0_0_12px_#00f0ff] transition-shadow" title="Return to Dashboard">
+        <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN MATRIX CONTENT -->
+<main class="w-full pt-20 px-4 md:px-12 bg-surface min-h-[calc(100vh-5rem)] flex flex-col">
+  <div class="flex flex-col w-full relative select-none overflow-hidden pb-8">
+    
+    <!-- Ambient Flashlight Overlay -->
+    <div class="pointer-events-none fixed inset-0 z-40 transition-opacity duration-300 opacity-80" id="ambient-flashlight" style="background: radial-gradient(circle 380px at 50% 50%, rgba(0, 240, 255, 0.08) 0%, rgba(10, 14, 21, 0.75) 45%, rgba(10, 14, 21, 0.96) 100%);"></div>
+
+    <!-- Matrix Controls Header -->
+    <div class="relative z-30 flex flex-col md:flex-row md:items-end justify-between gap-4 py-4">
+      <div class="flex items-center gap-3 flex-wrap">
+        <div class="flex items-center gap-2 px-4 py-1.5 bg-surface-container-lowest rounded-full shadow-lg border border-outline-variant/20">
+          <span class="inline-block w-2 h-2 rounded-full bg-primary animate-ping"></span>
+          <span class="font-label-md text-primary tracking-widest uppercase font-bold" id="matrix-title-label">EVIDENCE MATRIX // LIVE BOARD</span>
+          <span class="font-label-sm text-on-surface-variant/60 ml-1" id="matrix-location-label">NORTHBRIDGE MUSEUM</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm">
+          <span class="material-symbols-outlined text-secondary text-[15px]">touch_app</span>
+          <span id="matrix-hint-label">CLICK ANY CLUE TO INSPECT • DRAG TO MOVE</span>
+        </div>
+      </div>
+
+      <!-- Filter Pills -->
+      <div class="flex items-center gap-1 bg-surface-container-lowest/80 backdrop-blur-md p-1 rounded-full shadow-xl border border-outline-variant/30 flex-wrap">
+        <button class="matrix-filter-btn px-4 py-1 rounded-full font-label-md bg-primary text-on-primary font-semibold flex items-center gap-1.5 transition-all duration-200" onclick="filterMatrix('all', this)" id="filter-btn-all">
+          <span class="material-symbols-outlined text-[14px]">adjust</span>
+          <span>ALL</span>
+        </button>
+        <button class="matrix-filter-btn px-4 py-1 rounded-full font-label-md text-on-surface-variant hover:text-primary transition-all duration-200 flex items-center gap-1.5" onclick="filterMatrix('smoking', this)" id="filter-btn-smoking">
+          <span class="material-symbols-outlined text-secondary text-[14px]">star</span>
+          <span>KEY PROOF</span>
+        </button>
+        <button class="matrix-filter-btn px-4 py-1 rounded-full font-label-md text-on-surface-variant hover:text-error transition-all duration-200 flex items-center gap-1.5" onclick="filterMatrix('contradiction', this)" id="filter-btn-contra">
+          <span class="material-symbols-outlined text-error text-[14px]">bolt</span>
+          <span>TIMELINE</span>
+        </button>
+        <button class="matrix-filter-btn px-4 py-1 rounded-full font-label-md text-on-surface-variant hover:text-tertiary-fixed-dim transition-all duration-200 flex items-center gap-1.5" onclick="filterMatrix('cleared', this)" id="filter-btn-cleared">
+          <span class="material-symbols-outlined text-tertiary-fixed-dim text-[14px]">cancel</span>
+          <span>CLEARED</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Holographic Forensic Canvas Board -->
+    <div class="relative w-full h-[660px] bg-surface-container-lowest/60 rounded-xl overflow-hidden my-2 shadow-2xl border border-outline-variant/20" id="board-container">
+      <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: linear-gradient(to right, rgba(0, 240, 255, 0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 240, 255, 0.15) 1px, transparent 1px); background-size: 32px 32px;"></div>
+      
+      <div class="absolute top-4 left-4 z-10 pointer-events-none font-label-sm text-on-surface-variant/50 flex flex-col">
+        <span>CASE 001: GRAND GALLERY VAULT</span>
+        <span id="board-sublabel">4 SUSPECTS // 1 MATCHING FIBER TRACE</span>
+      </div>
+      <div class="absolute top-4 right-4 z-10 pointer-events-none font-label-sm text-primary-fixed-dim/70 flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+        <span id="board-status-label">HOLO-TETHERS SYNCHRONIZED</span>
+      </div>
+
+      <!-- Laser Tethers SVG Layer -->
+      <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" id="matrix-tethers">
+        <defs>
+          <lineargradient id="neon-cyan-grad" x1="0%" x2="100%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.95"></stop>
+            <stop offset="100%" stop-color="#6ffbbe" stop-opacity="0.8"></stop>
+          </lineargradient>
+          <lineargradient id="neon-amber-grad" x1="0%" x2="100%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#ea9f00" stop-opacity="0.9"></stop>
+            <stop offset="100%" stop-color="#ffb4ab" stop-opacity="0.95"></stop>
+          </lineargradient>
+          <filter height="140%" id="laser-glow" width="140%" x="-20%" y="-20%">
+            <fegaussianblur result="blur" stddeviation="3.5"></fegaussianblur>
+            <femerge>
+              <femergenode in="blur"></femergenode>
+              <femergenode in="SourceGraphic"></femergenode>
+            </femerge>
+          </filter>
+        </defs>
+        <path class="animate-[dash_1.8s_linear_infinite] laser-tether" d="M 230 190 C 370 160, 410 280, 520 280" fill="none" filter="url(#laser-glow)" id="tether-1" stroke="url(#neon-cyan-grad)" stroke-dasharray="7 5" stroke-width="2.5"></path>
+        <path class="animate-[dash_2.2s_linear_infinite] laser-tether" d="M 680 340 C 760 380, 770 240, 880 200" fill="none" filter="url(#laser-glow)" id="tether-2" stroke="url(#neon-amber-grad)" stroke-dasharray="6 4" stroke-width="2.5"></path>
+        <path class="animate-[dash_2.6s_linear_infinite] laser-tether" d="M 520 370 C 440 450, 400 480, 310 500" fill="none" filter="url(#laser-glow)" id="tether-3" stroke="url(#neon-cyan-grad)" stroke-dasharray="8 6" stroke-width="2"></path>
+        <path class="laser-tether" d="M 690 380 C 780 430, 830 460, 910 490" fill="none" id="tether-4" opacity="0.6" stroke="url(#neon-cyan-grad)" stroke-dasharray="5 5" stroke-width="1.5"></path>
+      </svg>
+
+      <!-- Node 1: Unbroken Glass & Lock Override -->
+      <div id="node-1" class="evidence-node cursor-grab absolute z-20 w-64 bg-surface-container-low/95 backdrop-blur-xl p-3 rounded-lg shadow-2xl transition-transform duration-200 hover:scale-105 group border border-outline-variant/30" data-category="contradiction" data-node-index="1" style="top: 80px; left: 80px;">
+        <div class="relative w-full h-40 bg-surface-container-lowest rounded overflow-hidden">
+          <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB68ncty8iNf4HRFbQNQG_JAHMzf2CJdpzQ2IshYiJ_o8pAhgEYKbDo7MMW5VovX4jakVoZw7lIEJxmR_1oH2VBk5F6ZdseKzAdir3GOoTg3nHTHJsm8d8DJS7Be0BPEmxv2GnXm_4Gyt9IrkD5CSOng41x_P5R2_cqPzyERd5I38nBW4A5tHo9u3jNBqVTSrx0LdaGS4nMbBIKSNhKIGjfIKjPzBn544iWblX2gGGe8mtf2TsGKRD1Q"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/90 via-transparent to-transparent pointer-events-none"></div>
+          <div class="absolute top-2 right-2 bg-error-container/90 px-2 py-0.5 rounded shadow border border-error/40 pointer-events-none">
+            <span class="font-label-sm text-error font-bold uppercase" id="node-tag-1">UNBROKEN GLASS</span>
+          </div>
+          <div class="absolute bottom-2 left-2 font-label-sm text-on-surface-variant flex items-center gap-1 pointer-events-none">
+            <span class="material-symbols-outlined text-error text-[13px]">lock_open</span>
+            <span id="node-sub-1">BATTERY LOCK // 8:23 PM</span>
+          </div>
+        </div>
+        <div class="mt-2 flex items-center justify-between px-1 pointer-events-none">
+          <span class="font-label-sm text-secondary uppercase font-semibold" id="node-title-1">EX-A // CASE LOCK</span>
+          <span class="font-label-sm text-on-surface-variant/80" id="node-meta-1">Δt 4min</span>
+        </div>
+      </div>
+
+      <!-- Node 2: Blue Velvet Fibers (Smoking Gun) -->
+      <div id="node-2" class="evidence-node cursor-grab absolute z-30 w-72 bg-surface-container-high/90 backdrop-blur-2xl p-3 rounded-lg shadow-[0_0_35px_rgba(0,240,255,0.25)] transition-transform duration-200 hover:scale-105 group border border-primary/50" data-category="smoking" data-node-index="2" style="top: 190px; left: 450px;">
+        <div class="relative w-full h-44 bg-surface-container-lowest rounded overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGXYAyB15qbN2-m0q5pawmN62D0CD9nZVK1IvGM5qBsa538PKQ2OthWsM6aZXXfUdDwiS_i2nE2NoFKkOdYvmrFnZlFaWmH2VezbLbdLtoQW64gjOAEHrM8-0wsMqV-zXGIog0Wo4vYHMnATu7PGVPcH0atN-VfAWj9IgtnWrz8SbJf-SKgMhIg7-dq6AgIUEycp8w-a-KS6tGXk_1Ee6VKqQS88zyQ19iqQqn9HW0A4ONjPjqUgDXGg"/>
+          <div class="absolute inset-0 bg-primary-container/10 mix-blend-screen pointer-events-none"></div>
+          <div class="absolute top-2 left-2 bg-surface-container-lowest/95 px-2 py-0.5 rounded shadow border border-primary/50 pointer-events-none">
+            <span class="font-label-sm text-primary font-bold uppercase" id="node-tag-2">97.8% FIBER MATCH</span>
+          </div>
+          <div class="absolute bottom-2 right-2 px-2 py-0.5 bg-secondary/90 rounded text-on-secondary font-label-sm font-bold uppercase shadow pointer-events-none" id="node-badge-2">
+            SMOKING GUN
+          </div>
+        </div>
+        <div class="mt-2 flex items-center justify-between px-1 pointer-events-none">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-primary-container animate-ping"></span>
+            <span class="font-label-md text-primary font-semibold" id="node-title-2">EX-E // BLUE FIBERS</span>
+          </div>
+          <span class="font-label-sm text-primary-fixed-dim" id="node-sub-2">ARJUN'S FOLDER</span>
+        </div>
+      </div>
+
+      <!-- Node 3: 4-Minute Power Failure Timeline -->
+      <div id="node-3" class="evidence-node cursor-grab absolute z-20 w-64 bg-surface-container-low/95 backdrop-blur-xl p-3 rounded-lg shadow-2xl transition-transform duration-200 hover:scale-105 group border border-outline-variant/30" data-category="contradiction" data-node-index="3" style="top: 90px; left: 840px;">
+        <div class="relative w-full h-40 bg-surface-container-lowest rounded overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDzhqLsR5uFbay4F8bzx2jAXKpqg_UuSZj2tQrTnnMRfftSw0FqiO2atBVkyvjpKqsOaqqkB1zWi9XzCzQxnY9RCfXoKL2XbnD-oLGyhpafCeeLOm2ZgvyK21Krar9Mt18Y9Cpv3ljloVv3kOTASYiy5XyfIxY6x0t3KWbCUAo1pg3TCvqnT0luqym_YXWZ0xWgoTONBihz0dbsztQzKGchqoiKO6Rm_fEgM8ERdVTG1R6XNQy3h5Srg"/>
+          <div class="absolute top-2 left-2 bg-error px-2 py-0.5 rounded shadow border border-error-container pointer-events-none">
+            <span class="font-label-sm text-on-error font-bold uppercase" id="node-tag-3">BLACKOUT HEIST</span>
+          </div>
+          <div class="absolute bottom-2 left-2 font-label-sm text-on-surface-variant flex items-center gap-1 pointer-events-none">
+            <span class="material-symbols-outlined text-secondary text-[14px]">timer</span>
+            <span id="node-sub-3">8:20 PM - 8:24 PM</span>
+          </div>
+        </div>
+        <div class="mt-2 flex items-center justify-between px-1 pointer-events-none">
+          <span class="font-label-sm text-secondary font-semibold uppercase" id="node-title-3">EX-G // 4-MIN WINDOW</span>
+          <span class="font-label-sm text-error" id="node-meta-3">CRITICAL</span>
+        </div>
+      </div>
+
+      <!-- Node 4: Lena's Generator Alibi -->
+      <div id="node-4" class="evidence-node cursor-grab absolute z-20 w-60 bg-surface-container-low/95 backdrop-blur-xl p-3 rounded-lg shadow-2xl transition-transform duration-200 hover:scale-105 group border border-outline-variant/30" data-category="cleared" data-node-index="4" style="top: 410px; left: 140px;">
+        <div class="relative w-full h-36 bg-surface-container-lowest rounded overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiLh9a4bDmPLZgKffm9HFeatV7zzc4IsCmpfkt8_dIoQ1h1jG2RwpfLdFrdJkEeGU9DdiZAyku4EfR9cSw9Zi0BSdtECRjFMY85ZARd3xfi8qmV1bo6fJ_kFZdAAi_dFMfgiZQY4HbgH8ZSI6cfWTrfzYQ23OrunU4Gg5cLcYEB2gsQpF5lUHAwrfA65_ILjsox5rU2U3N24qdSpwcNe0_tWaQk5jsPq1XnyWRvW7NVl7SsKbLqM7cqA"/>
+          <div class="absolute top-2 right-2 bg-surface-container-highest/90 px-2 py-0.5 rounded font-label-sm text-tertiary pointer-events-none" id="node-tag-4">
+            ALIBI VERIFIED
+          </div>
+          <div class="absolute bottom-2 left-2 font-label-sm text-primary flex items-center gap-1 pointer-events-none">
+            <span class="material-symbols-outlined text-[13px]">power</span>
+            <span id="node-sub-4">BASEMENT // 8:20 PM</span>
+          </div>
+        </div>
+        <div class="mt-2 flex items-center justify-between px-1 pointer-events-none">
+          <span class="font-label-sm text-on-surface-variant uppercase font-semibold" id="node-title-4">LENA ORTIZ // ALIBI</span>
+          <span class="font-label-sm text-tertiary-fixed-dim" id="node-meta-4">CLEARED</span>
+        </div>
+      </div>
+
+      <!-- Node 5: Theo & Sofia Cleared Alibis -->
+      <div id="node-5" class="evidence-node cursor-grab absolute z-20 w-64 bg-surface-container-low/95 backdrop-blur-xl p-3 rounded-lg shadow-2xl opacity-85 transition-transform duration-200 hover:opacity-100 hover:scale-105 group border border-outline-variant/30" data-category="cleared" data-node-index="5" style="top: 420px; left: 820px;">
+        <div class="relative w-full h-36 bg-surface-container-lowest rounded overflow-hidden">
+          <img class="w-full h-full object-cover filter contrast-125 group-hover:scale-105 transition-transform duration-500 pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgQtSwbuBEpd1M32C9M3HBMe5dOpM7gVS4e7YLeqFp44spJ2LOiTzV5syeYh-dlXei5kUi1C09wix6QpR2govi50fO7qTiyxYuOjKt_i-tsu9nfjx1NTIV0CNdRKV9NleLGDihl_MlbGUx0-0RRoqmNxOM4o0D6yJJq6UIZcFXYCfeXAWtIPmfny2SlJc0NahFQJ1t5CA9QGgJCxeIDPKux4jNXmAlEzRKUP6hkRPl42Sk2hV2-QBlTQ"/>
+          <div class="absolute top-2 left-2 bg-surface-container-highest px-2 py-0.5 rounded font-label-sm text-on-surface font-semibold uppercase pointer-events-none" id="node-tag-5">
+            ON CAMERA & WITH GUESTS
+          </div>
+          <div class="absolute top-2 right-2 bg-surface-container-lowest/90 px-2 py-0.5 rounded shadow border border-tertiary-container/30 pointer-events-none">
+            <span class="font-label-sm text-tertiary font-bold uppercase">CLEARED</span>
+          </div>
+        </div>
+        <div class="mt-2 flex items-center justify-between px-1 pointer-events-none">
+          <span class="font-label-sm text-on-surface-variant uppercase font-semibold" id="node-title-5">THEO & SOFIA</span>
+          <span class="font-label-sm text-tertiary-fixed-dim" id="node-meta-5">CLEARED</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chrono Scrubber -->
+    <div class="relative z-30 w-full bg-surface-container-low/90 backdrop-blur-xl p-4 rounded-xl shadow-xl flex flex-col gap-2 border border-outline-variant/20">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-primary text-[18px]">history_toggle_off</span>
+            <span class="font-label-md text-on-surface uppercase tracking-wider font-semibold" id="scrubber-title">INCIDENT TIMELINE SCRUBBER</span>
+          </div>
+          <span class="hidden md:inline font-label-sm text-on-surface-variant" id="scrubber-range">8:00 PM - 8:30 PM (CRITICAL TIME SEQUENCE)</span>
+        </div>
+        <div class="flex items-center gap-4 font-label-sm">
+          <span class="text-error flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-error"></span><span id="leg-critical">CRITICAL EVENT</span></span>
+          <span class="text-secondary flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span><span id="leg-flagged">KEY MOMENT</span></span>
+          <span class="text-primary flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span id="leg-alibi">ALIBI VERIFIED</span></span>
+        </div>
+      </div>
+
+      <div class="relative w-full h-14 bg-surface-container-lowest rounded-lg flex items-center px-4 overflow-hidden border border-outline-variant/10">
+        <!-- Progress Bar Track -->
+        <div class="w-full h-1.5 bg-surface-container-highest rounded relative" id="chrono-track">
+          <div id="chrono-fill" class="absolute left-0 top-0 h-full w-[65%] bg-gradient-to-r from-primary/30 to-primary rounded transition-all duration-300"></div>
+          
+          <!-- Event Pin 1: 8:00 PM -->
+          <div class="chrono-pin group absolute top-1/2 -translate-y-1/2 -translate-x-1/2 cursor-pointer" style="left: 10%;" onclick="scrubTo(10, 1)" title="8:00 PM: Display Locked">
+            <div class="w-3.5 h-3.5 rounded-full bg-secondary flex items-center justify-center shadow-[0_0_10px_#ffbd58] group-hover:scale-125 transition-transform">
+              <div class="w-1.5 h-1.5 rounded-full bg-on-secondary"></div>
+            </div>
+            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-surface-container-highest px-2 py-0.5 rounded font-label-sm text-secondary opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow" id="pin-1">
+              8:00 PM LOCKED
+            </div>
+          </div>
+
+          <!-- Event Pin 2: 8:20 PM -->
+          <div class="chrono-pin group absolute top-1/2 -translate-y-1/2 -translate-x-1/2 cursor-pointer" style="left: 40%;" onclick="scrubTo(40, 3)" title="8:20 PM: Blackout Begins">
+            <div class="w-4 h-4 rounded-full bg-error flex items-center justify-center shadow-[0_0_12px_#ffb4ab] group-hover:scale-125 transition-transform">
+              <div class="w-2 h-2 rounded-full bg-on-error"></div>
+            </div>
+            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-surface-container-highest px-2 py-0.5 rounded font-label-sm text-error opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow" id="pin-2">
+              8:20 PM BLACKOUT CUT
+            </div>
+          </div>
+
+          <!-- Event Pin 3: 8:23 PM (KEY EVENT) -->
+          <div class="chrono-pin group absolute top-1/2 -translate-y-1/2 -translate-x-1/2 cursor-pointer z-10" style="left: 65%;" onclick="scrubTo(65, 2)" title="8:23 PM: Arjun's Card Swiped">
+            <div class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center shadow-[0_0_16px_#00f0ff] animate-pulse">
+              <div class="w-2 h-2 rounded-full bg-on-primary-container"></div>
+            </div>
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-surface-container-highest px-2 py-0.5 rounded font-label-sm text-primary font-bold shadow" id="pin-3">
+              8:23 PM CARD SWIPE
+            </div>
+          </div>
+
+          <!-- Event Pin 4: 8:25 PM -->
+          <div class="chrono-pin group absolute top-1/2 -translate-y-1/2 -translate-x-1/2 cursor-pointer" style="left: 85%;" onclick="scrubTo(85, 2)" title="8:25 PM: Arjun Leaves With Folder">
+            <div class="w-3.5 h-3.5 rounded-full bg-secondary flex items-center justify-center shadow-[0_0_8px_#ffbd58] group-hover:scale-125 transition-transform">
+              <div class="w-1.5 h-1.5 rounded-full bg-on-secondary"></div>
+            </div>
+            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-surface-container-highest px-2 py-0.5 rounded font-label-sm text-secondary opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow" id="pin-4">
+              8:25 PM FOLDER PHOTO
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORENSIC EVIDENCE INSPECTOR MODAL -->
+  <div id="modal-evidence-detail" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-surface-container-low border border-primary/40 rounded-xl max-w-xl w-full p-6 shadow-2xl relative flex flex-col gap-4 animate-[fadeIn_0.2s_ease-out]">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-primary animate-ping"></span>
+          <h3 id="modal-node-title" class="font-headline-md text-primary uppercase text-lg">FORENSIC EXHIBIT DOSSIER</h3>
+        </div>
+        <button onclick="closeEvidenceModal()" class="text-on-surface-variant hover:text-primary transition-colors p-1" title="Close">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="relative h-48 bg-surface-container-lowest rounded-lg overflow-hidden border border-outline-variant/20">
+          <img id="modal-node-img" class="w-full h-full object-cover" src="" alt="Forensic Closeup">
+          <div class="absolute bottom-2 left-2 px-2 py-0.5 bg-surface-container-lowest/90 rounded text-xs font-mono text-primary">CASE #001</div>
+        </div>
+        <div class="flex flex-col gap-2 font-label-sm text-xs">
+          <div class="flex justify-between border-b border-outline-variant/20 py-1">
+            <span class="text-on-surface-variant" id="modal-lbl-type">CLASSIFICATION:</span>
+            <span id="modal-node-classification" class="font-bold text-secondary">SMOKING GUN</span>
+          </div>
+          <div class="flex justify-between border-b border-outline-variant/20 py-1">
+            <span class="text-on-surface-variant" id="modal-lbl-time">TIMECODE:</span>
+            <span id="modal-node-timecode" class="text-on-surface font-mono">8:23 PM</span>
+          </div>
+          <div class="flex justify-between border-b border-outline-variant/20 py-1">
+            <span class="text-on-surface-variant" id="modal-lbl-score">RELIABILITY:</span>
+            <span id="modal-node-correlation" class="text-primary font-mono font-bold">HIGH // VERIFIED</span>
+          </div>
+          <div class="mt-2 text-xs text-on-surface-variant leading-relaxed" id="modal-node-description">
+            Description...
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-3 border-t border-outline-variant/30">
+        <span class="font-label-sm text-xs text-on-surface-variant">SENTINEL-AI • CASE #001</span>
+        <div class="flex items-center gap-2">
+          <a href="index.html#clues" class="px-3 py-1.5 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded text-xs font-mono transition-colors" id="modal-btn-dossier">
+            View in Case Dossier
+          </a>
+          <button onclick="closeEvidenceModal()" class="px-4 py-1.5 bg-primary text-on-primary font-bold rounded text-xs font-mono" id="modal-btn-close">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // Ambient Flashlight mouse tracker
+      const flashlight = document.getElementById('ambient-flashlight');
+      window.addEventListener('mousemove', (e) => {
+        if (!flashlight) return;
+        const x = e.clientX;
+        const y = e.clientY;
+        flashlight.style.background = `radial-gradient(circle 420px at ${x}px ${y}px, rgba(0, 240, 255, 0.09) 0%, rgba(10, 14, 21, 0.72) 42%, rgba(10, 14, 21, 0.96) 100%)`;
+      });
+
+      // Filter Matrix
+      window.filterMatrix = function(category, activeBtn) {
+        document.querySelectorAll('.matrix-filter-btn').forEach(btn => {
+          btn.classList.remove('bg-primary', 'text-on-primary', 'font-semibold');
+          btn.classList.add('text-on-surface-variant');
+        });
+        if (activeBtn) {
+          activeBtn.classList.add('bg-primary', 'text-on-primary', 'font-semibold');
+          activeBtn.classList.remove('text-on-surface-variant');
+        }
+
+        const nodes = document.querySelectorAll('.evidence-node');
+        const tethers = document.getElementById('matrix-tethers');
+
+        nodes.forEach(node => {
+          const nodeCat = node.getAttribute('data-category');
+          if (category === 'all' || nodeCat === category) {
+            node.style.opacity = '1';
+            node.style.filter = 'none';
+            node.style.pointerEvents = 'auto';
+          } else {
+            node.style.opacity = '0.15';
+            node.style.filter = 'grayscale(100%)';
+            node.style.pointerEvents = 'none';
+          }
+        });
+
+        if (tethers) {
+          tethers.style.opacity = (category === 'all' || category === 'smoking') ? '1' : '0.25';
+        }
+      };
+
+      // Chrono Scrubber
+      window.scrubTo = function(pct, highlightNodeIdx) {
+        const fill = document.getElementById('chrono-fill');
+        if (fill) fill.style.width = pct + '%';
+
+        document.querySelectorAll('.evidence-node').forEach(node => {
+          node.classList.remove('node-highlighted');
+        });
+
+        if (highlightNodeIdx) {
+          const target = document.getElementById('node-' + highlightNodeIdx);
+          if (target) {
+            target.classList.add('node-highlighted');
+            setTimeout(() => {
+              target.classList.remove('node-highlighted');
+            }, 3500);
+          }
+        }
+      };
+
+      // Bilingual Matrix Content Dictionary
+      const matrixI18n = {
+        en: {
+          langBtn: "हिन्दी",
+          caseBadge: "CASE #001",
+          caseSubtag: "[AURORA DIAMOND]",
+          statusTag: "EVIDENCE GROUNDED // ZERO HALLUCINATION",
+          navDossier: "01. Dossier",
+          navAgents: "02. Agents",
+          navClues: "03. Clues",
+          navMatrix: "04. Matrix ⚡",
+          navVerdict: "05. Verdict",
+          titleLabel: "EVIDENCE MATRIX // LIVE BOARD",
+          locationLabel: "NORTHBRIDGE MUSEUM",
+          hintLabel: "CLICK ANY CLUE TO INSPECT • DRAG TO MOVE",
+          filterAll: "ALL",
+          filterSmoking: "KEY PROOF",
+          filterContra: "TIMELINE",
+          filterCleared: "CLEARED",
+          boardSublabel: "4 SUSPECTS // 1 MATCHING FIBER TRACE",
+          boardStatus: "HOLO-TETHERS SYNCHRONIZED",
+          scrubberTitle: "INCIDENT TIMELINE SCRUBBER",
+          scrubberRange: "8:00 PM - 8:30 PM (CRITICAL TIME SEQUENCE)",
+          legCritical: "CRITICAL EVENT",
+          legFlagged: "KEY MOMENT",
+          legAlibi: "ALIBI VERIFIED",
+          pin1: "8:00 PM LOCKED",
+          pin2: "8:20 PM BLACKOUT CUT",
+          pin3: "8:23 PM CARD SWIPE",
+          pin4: "8:25 PM FOLDER PHOTO",
+          node1Tag: "UNBROKEN GLASS",
+          node1Title: "EX-A // CASE LOCK",
+          node1Sub: "BATTERY LOCK // 8:23 PM",
+          node2Tag: "97.8% FIBER MATCH",
+          node2Title: "EX-E // BLUE FIBERS",
+          node2Sub: "ARJUN'S FOLDER",
+          node2Badge: "SMOKING GUN",
+          node3Tag: "BLACKOUT HEIST",
+          node3Title: "EX-G // 4-MIN WINDOW",
+          node3Sub: "8:20 PM - 8:24 PM",
+          node4Tag: "ALIBI VERIFIED",
+          node4Title: "LENA ORTIZ // ALIBI",
+          node4Sub: "BASEMENT // 8:20 PM",
+          node5Tag: "ON CAMERA & WITH GUESTS",
+          node5Title: "THEO & SOFIA",
+          node5Meta: "CLEARED",
+          modalClose: "Close",
+          modalDossier: "View in Case Dossier",
+          dossiers: {
+            1: {
+              title: "EXHIBIT A // UNBROKEN GLASS & KEYCARD LOCK",
+              type: "FACT",
+              time: "8:23 PM",
+              score: "HIGH // VERIFIED",
+              desc: "The reinforced glass was completely unbroken. The electronic lock recorded an authorized card swipe during the blackout at 8:23 PM. Confirms insider card access rather than a forced smash-and-grab."
+            },
+            2: {
+              title: "EXHIBIT E // BLUE VELVET FIBERS (SMOKING GUN)",
+              type: "SMOKING GUN",
+              time: "8:25 PM",
+              score: "97.8% SPECTROMETRY MATCH",
+              desc: "Microscopic blue velvet fibers were discovered inside the flat catalogue folder Arjun carried leaving the archive at 8:25 PM. The fibers match the display case cushion!"
+            },
+            3: {
+              title: "EXHIBIT G // 4-MINUTE POWER BLACKOUT",
+              type: "TIMELINE WINDOW",
+              time: "8:20 PM - 8:24 PM",
+              score: "HIGH // CONFIRMED",
+              desc: "The entire museum lost power for exactly 4 minutes. Emergency lighting was limited and main cameras shut down. Arjun's card opened the case at 8:23 PM."
+            },
+            4: {
+              title: "EXHIBIT B // LENA ORTIZ GENERATOR ALIBI",
+              type: "ALIBI VERIFIED (CLEARED)",
+              time: "8:19 PM - 8:26 PM",
+              score: "HIGH // CONFIRMED",
+              desc: "Chief Engineer Lena Ortiz was in the basement restarting the generator. She did not enter the Grand Gallery. Muddy bootprint was from an earlier afternoon inspection."
+            },
+            5: {
+              title: "EXHIBIT F // THEO PARK & SOFIA REED ALIBIS",
+              type: "ALIBI VERIFIED (CLEARED)",
+              time: "8:15 PM - 8:29 PM",
+              score: "CONFIRMED // EYEWITNESSES",
+              desc: "Theo Park was continuously on stage facing the live audience and broadcast camera. Sofia Reed was in the lobby talking with 3 visitors during the blackout. Both cleared."
+            }
+          }
+        },
+        hi: {
+          langBtn: "English",
+          caseBadge: "केस #001",
+          caseSubtag: "[अरोरा हीरा चोरी]",
+          statusTag: "केवल केस तथ्य // शून्य मनगढ़ंत कहानी",
+          navDossier: "01. केस फाइल",
+          navAgents: "02. एजेंट्स",
+          navClues: "03. सबूत",
+          navMatrix: "04. मैट्रिक्स ⚡",
+          navVerdict: "05. फैसला",
+          titleLabel: "सबूत मैट्रिक्स // लाइव बोर्ड",
+          locationLabel: "नॉर्थब्रिज म्यूजियम",
+          hintLabel: "सबूत देखने के लिए क्लिक करें • हिलाने के लिए खींचें",
+          filterAll: "सभी",
+          filterSmoking: "मुख्य सबूत",
+          filterContra: "समयरेखा",
+          filterCleared: "निर्दोष",
+          boardSublabel: "4 संदिग्ध // 1 मिलान धागा",
+          boardStatus: "लेजर तार जुड़े हैं",
+          scrubberTitle: "घटना समयरेखा स्क्रबर",
+          scrubberRange: "रात 8:00 से 8:30 बजे (घटनाक्रम)",
+          legCritical: "महत्वपूर्ण घटना",
+          legFlagged: "मुख्य क्षण",
+          legAlibi: "निर्दोष प्रमाणित",
+          pin1: "8:00 PM ताला लगा",
+          pin2: "8:20 PM बत्ती गुल",
+          pin3: "8:23 PM कार्ड स्वाइप",
+          pin4: "8:25 PM फोल्डर दिखा",
+          node1Tag: "कांच नहीं टूटा",
+          node1Title: "सबूत A // ताला",
+          node1Sub: "बैटरी ताला // 8:23 PM",
+          node2Tag: "97.8% धागा मिलान",
+          node2Title: "सबूत E // नीले धागे",
+          node2Sub: "अर्जुन का फोल्डर",
+          node2Badge: "पक्का सबूत",
+          node3Tag: "अंधेरे में चोरी",
+          node3Title: "सबूत G // 4 मिनट विंडो",
+          node3Sub: "8:20 PM - 8:24 PM",
+          node4Tag: "निर्दोष प्रमाणित",
+          node4Title: "लीना ओर्टिज़ // अलबाई",
+          node4Sub: "बेसमेंट // 8:20 PM",
+          node5Tag: "कैमरे व मेहमानों के साथ",
+          node5Title: "थियो व सोफिया",
+          node5Meta: "निर्दोष",
+          modalClose: "बंद करें",
+          modalDossier: "केस फाइल में देखें",
+          dossiers: {
+            1: {
+              title: "सबूत A // कांच नहीं टूटा और बैटरी ताला",
+              type: "पक्का तथ्य",
+              time: "रात 8:23 बजे",
+              score: "उच्च विश्वसनीयता",
+              desc: "म्यूजियम का कांच बिल्कुल नहीं टूटा था। बैटरी बैकअप वाले इलेक्ट्रॉनिक ताले ने रात 8:23 बजे अधिकृत कार्ड का इस्तेमाल रिकॉर्ड किया। यह साबित करता है कि चोरी किसी अंदरूनी व्यक्ति के कार्ड से हुई।"
+            },
+            2: {
+              title: "सबूत E // नीले मखमली धागे (पक्का सबूत)",
+              type: "मुख्य सबूत (SMOKING GUN)",
+              time: "रात 8:25 बजे",
+              score: "97.8% रासायनिक मिलान",
+              desc: "8:25 बजे अर्जुन आर्काइव से एक फ्लैट फोल्डर लेकर निकलते दिखे थे। उस फोल्डर में नीले मखमली धागे मिले जो सीधे हीरे के डिस्प्ले गद्दे से मेल खाते हैं!"
+            },
+            3: {
+              title: "सबूत G // 4 मिनट की बत्ती गुल",
+              type: "घटना की समय खिड़की",
+              time: "रात 8:20 से 8:24 बजे",
+              score: "प्रमाणित",
+              desc: "म्यूजियम में 4 मिनट के लिए बिजली चली गई थी। मुख्य कैमरे बंद हो गए थे। इसी अंधेरे का फायदा उठाकर रात 8:23 बजे अर्जुन के कार्ड से ताला खोला गया।"
+            },
+            4: {
+              title: "सबूत B // लीना ओर्टिज़ का ठिकाना (निर्दोष)",
+              type: "पुख्ता अलबाई",
+              time: "रात 8:19 से 8:26 बजे",
+              score: "प्रमाणित",
+              desc: "चीफ इंजीनियर लीना ओर्टिज़ बेसमेंट में इमरजेंसी जनरेटर चालू कर रही थीं। वे गैलरी में नहीं गईं। कीचड़ वाले जूते का निशान दोपहर की जांच का था।"
+            },
+            5: {
+              title: "सबूत F // थियो पार्क और सोफिया रीड (निर्दोष)",
+              type: "पुख्ता अलबाई",
+              time: "रात 8:15 से 8:29 बजे",
+              score: "लाइव कैमरा व गवाह",
+              desc: "थियो पार्क लगातार दर्शकों के सामने स्टेज पर लाइव कैमरे पर थे। सोफिया रीड लॉबी में 3 मेहमानों का इंटरव्यू ले रही थीं। दोनों पूरी तरह निर्दोष हैं।"
+            }
+          }
+        }
+      };
+
+      let currentLang = localStorage.getItem('sentinel_lang') || 'en';
+
+      function applyMatrixLang() {
+        const dict = matrixI18n[currentLang];
+        if (!dict) return;
+
+        document.getElementById('matrix-lang-label').textContent = dict.langBtn;
+        document.getElementById('matrix-case-badge').textContent = dict.caseBadge;
+        document.getElementById('matrix-case-subtag').textContent = dict.caseSubtag;
+        document.getElementById('matrix-status-tag').textContent = dict.statusTag;
+
+        document.getElementById('nav-dossier').textContent = dict.navDossier;
+        document.getElementById('nav-agents').textContent = dict.navAgents;
+        document.getElementById('nav-clues').textContent = dict.navClues;
+        document.getElementById('nav-matrix').textContent = dict.navMatrix;
+        document.getElementById('nav-verdict').textContent = dict.navVerdict;
+
+        document.getElementById('matrix-title-label').textContent = dict.titleLabel;
+        document.getElementById('matrix-location-label').textContent = dict.locationLabel;
+        document.getElementById('matrix-hint-label').textContent = dict.hintLabel;
+
+        document.querySelector('#filter-btn-all span:last-child').textContent = dict.filterAll;
+        document.querySelector('#filter-btn-smoking span:last-child').textContent = dict.filterSmoking;
+        document.querySelector('#filter-btn-contra span:last-child').textContent = dict.filterContra;
+        document.querySelector('#filter-btn-cleared span:last-child').textContent = dict.filterCleared;
+
+        document.getElementById('board-sublabel').textContent = dict.boardSublabel;
+        document.getElementById('board-status-label').textContent = dict.boardStatus;
+
+        document.getElementById('scrubber-title').textContent = dict.scrubberTitle;
+        document.getElementById('scrubber-range').textContent = dict.scrubberRange;
+        document.getElementById('leg-critical').textContent = dict.legCritical;
+        document.getElementById('leg-flagged').textContent = dict.legFlagged;
+        document.getElementById('leg-alibi').textContent = dict.legAlibi;
+
+        document.getElementById('pin-1').textContent = dict.pin1;
+        document.getElementById('pin-2').textContent = dict.pin2;
+        document.getElementById('pin-3').textContent = dict.pin3;
+        document.getElementById('pin-4').textContent = dict.pin4;
+
+        document.getElementById('node-tag-1').textContent = dict.node1Tag;
+        document.getElementById('node-title-1').textContent = dict.node1Title;
+        document.getElementById('node-sub-1').textContent = dict.node1Sub;
+
+        document.getElementById('node-tag-2').textContent = dict.node2Tag;
+        document.getElementById('node-title-2').textContent = dict.node2Title;
+        document.getElementById('node-sub-2').textContent = dict.node2Sub;
+        document.getElementById('node-badge-2').textContent = dict.node2Badge;
+
+        document.getElementById('node-tag-3').textContent = dict.node3Tag;
+        document.getElementById('node-title-3').textContent = dict.node3Title;
+        document.getElementById('node-sub-3').textContent = dict.node3Sub;
+
+        document.getElementById('node-tag-4').textContent = dict.node4Tag;
+        document.getElementById('node-title-4').textContent = dict.node4Title;
+        document.getElementById('node-sub-4').textContent = dict.node4Sub;
+
+        document.getElementById('node-tag-5').textContent = dict.node5Tag;
+        document.getElementById('node-title-5').textContent = dict.node5Title;
+        document.getElementById('node-meta-5').textContent = dict.node5Meta;
+
+        document.getElementById('modal-btn-close').textContent = dict.modalClose;
+        document.getElementById('modal-btn-dossier').textContent = dict.modalDossier;
+
+        document.documentElement.lang = currentLang;
+      }
+
+      window.toggleMatrixLang = function() {
+        currentLang = currentLang === 'en' ? 'hi' : 'en';
+        localStorage.setItem('sentinel_lang', currentLang);
+        applyMatrixLang();
+        updateTethers();
+      };
+
+      // Modal open
+      window.openEvidenceModal = function(nodeIdx) {
+        const dict = matrixI18n[currentLang];
+        const data = dict.dossiers[nodeIdx];
+        if (!data) return;
+
+        document.getElementById('modal-node-title').textContent = data.title;
+        document.getElementById('modal-node-classification').textContent = data.type;
+        document.getElementById('modal-node-timecode').textContent = data.time;
+        document.getElementById('modal-node-correlation').textContent = data.score;
+        document.getElementById('modal-node-description').textContent = data.desc;
+
+        // Set images
+        const imgs = {
+          1: "https://lh3.googleusercontent.com/aida-public/AB6AXuBB68ncty8iNf4HRFbQNQG_JAHMzf2CJdpzQ2IshYiJ_o8pAhgEYKbDo7MMW5VovX4jakVoZw7lIEJxmR_1oH2VBk5F6ZdseKzAdir3GOoTg3nHTHJsm8d8DJS7Be0BPEmxv2GnXm_4Gyt9IrkD5CSOng41x_P5R2_cqPzyERd5I38nBW4A5tHo9u3jNBqVTSrx0LdaGS4nMbBIKSNhKIGjfIKjPzBn544iWblX2gGGe8mtf2TsGKRD1Q",
+          2: "https://lh3.googleusercontent.com/aida-public/AB6AXuDGXYAyB15qbN2-m0q5pawmN62D0CD9nZVK1IvGM5qBsa538PKQ2OthWsM6aZXXfUdDwiS_i2nE2NoFKkOdYvmrFnZlFaWmH2VezbLbdLtoQW64gjOAEHrM8-0wsMqV-zXGIog0Wo4vYHMnATu7PGVPcH0atN-VfAWj9IgtnWrz8SbJf-SKgMhIg7-dq6AgIUEycp8w-a-KS6tGXk_1Ee6VKqQS88zyQ19iqQqn9HW0A4ONjPjqUgDXGg",
+          3: "https://lh3.googleusercontent.com/aida-public/AB6AXuCDzhqLsR5uFbay4F8bzx2jAXKpqg_UuSZj2tQrTnnMRfftSw0FqiO2atBVkyvjpKqsOaqqkB1zWi9XzCzQxnY9RCfXoKL2XbnD-oLGyhpafCeeLOm2ZgvyK21Krar9Mt18Y9Cpv3ljloVv3kOTASYiy5XyfIxY6x0t3KWbCUAo1pg3TCvqnT0luqym_YXWZ0xWgoTONBihz0dbsztQzKGchqoiKO6Rm_fEgM8ERdVTG1R6XNQy3h5Srg",
+          4: "https://lh3.googleusercontent.com/aida-public/AB6AXuDiLh9a4bDmPLZgKffm9HFeatV7zzc4IsCmpfkt8_dIoQ1h1jG2RwpfLdFrdJkEeGU9DdiZAyku4EfR9cSw9Zi0BSdtECRjFMY85ZARd3xfi8qmV1bo6fJ_kFZdAAi_dFMfgiZQY4HbgH8ZSI6cfWTrfzYQ23OrunU4Gg5cLcYEB2gsQpF5lUHAwrfA65_ILjsox5rU2U3N24qdSpwcNe0_tWaQk5jsPq1XnyWRvW7NVl7SsKbLqM7cqA",
+          5: "https://lh3.googleusercontent.com/aida-public/AB6AXuAgQtSwbuBEpd1M32C9M3HBMe5dOpM7gVS4e7YLeqFp44spJ2LOiTzV5syeYh-dlXei5kUi1C09wix6QpR2govi50fO7qTiyxYuOjKt_i-tsu9nfjx1NTIV0CNdRKV9NleLGDihl_MlbGUx0-0RRoqmNxOM4o0D6yJJq6UIZcFXYCfeXAWtIPmfny2SlJc0NahFQJ1t5CA9QGgJCxeIDPKux4jNXmAlEzRKUP6hkRPl42Sk2hV2-QBlTQ"
+        };
+        document.getElementById('modal-node-img').src = imgs[nodeIdx];
+
+        const modal = document.getElementById('modal-evidence-detail');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      };
+
+      window.closeEvidenceModal = function() {
+        const modal = document.getElementById('modal-evidence-detail');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      };
+
+      // Realtime Draggable Nodes & Dynamic SVG Laser Tethers
+      const container = document.getElementById('board-container');
+      const nodes = [
+        document.getElementById('node-1'),
+        document.getElementById('node-2'),
+        document.getElementById('node-3'),
+        document.getElementById('node-4'),
+        document.getElementById('node-5')
+      ];
+
+      function getCenter(el) {
+        const b = el.getBoundingClientRect();
+        const c = container.getBoundingClientRect();
+        return {
+          x: b.left - c.left + b.width / 2,
+          y: b.top - c.top + b.height / 2
+        };
+      }
+
+      function updateTethers() {
+        if (!nodes[0] || !nodes[1]) return;
+        const c1 = getCenter(nodes[0]);
+        const c2 = getCenter(nodes[1]);
+        const c3 = getCenter(nodes[2]);
+        const c4 = getCenter(nodes[3]);
+        const c5 = getCenter(nodes[4]);
+
+        const t1 = document.getElementById('tether-1');
+        const t2 = document.getElementById('tether-2');
+        const t3 = document.getElementById('tether-3');
+        const t4 = document.getElementById('tether-4');
+
+        if (t1) {
+          const mx1 = (c1.x + c2.x) / 2;
+          t1.setAttribute('d', `M ${c1.x} ${c1.y} C ${mx1} ${c1.y - 30}, ${mx1} ${c2.y + 20}, ${c2.x} ${c2.y}`);
+        }
+        if (t2) {
+          const mx2 = (c2.x + c3.x) / 2;
+          t2.setAttribute('d', `M ${c2.x} ${c2.y} C ${mx2} ${c2.y + 40}, ${mx2} ${c3.y - 30}, ${c3.x} ${c3.y}`);
+        }
+        if (t3) {
+          const mx3 = (c2.x + c4.x) / 2;
+          t3.setAttribute('d', `M ${c2.x} ${c2.y} C ${mx3} ${c2.y + 50}, ${mx3} ${c4.y - 40}, ${c4.x} ${c4.y}`);
+        }
+        if (t4) {
+          const mx4 = (c2.x + c5.x) / 2;
+          t4.setAttribute('d', `M ${c2.x} ${c2.y} C ${mx4} ${c2.y + 30}, ${mx4} ${c5.y - 20}, ${c5.x} ${c5.y}`);
+        }
+      }
+
+      // Drag implementation
+      let activeDrag = null;
+      let startMouse = { x: 0, y: 0 };
+      let startPos = { top: 0, left: 0 };
+      let dragDistance = 0;
+
+      nodes.forEach(node => {
+        if (!node) return;
+        node.addEventListener('mousedown', (e) => {
+          if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
+          activeDrag = node;
+          startMouse = { x: e.clientX, y: e.clientY };
+          startPos = { top: node.offsetTop, left: node.offsetLeft };
+          dragDistance = 0;
+          node.classList.add('cursor-grabbing');
+          e.preventDefault();
+        });
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!activeDrag) return;
+        const dx = e.clientX - startMouse.x;
+        const dy = e.clientY - startMouse.y;
+        dragDistance = Math.hypot(dx, dy);
+
+        let newLeft = startPos.left + dx;
+        let newTop = startPos.top + dy;
+
+        const maxW = container.clientWidth - activeDrag.offsetWidth;
+        const maxH = container.clientHeight - activeDrag.offsetHeight;
+        newLeft = Math.max(10, Math.min(newLeft, maxW - 10));
+        newTop = Math.max(10, Math.min(newTop, maxH - 10));
+
+        activeDrag.style.left = newLeft + 'px';
+        activeDrag.style.top = newTop + 'px';
+
+        requestAnimationFrame(updateTethers);
+      });
+
+      window.addEventListener('mouseup', (e) => {
+        if (!activeDrag) return;
+        const nodeIdx = parseInt(activeDrag.getAttribute('data-node-index'), 10);
+        activeDrag.classList.remove('cursor-grabbing');
+
+        if (dragDistance < 6) {
+          openEvidenceModal(nodeIdx);
+        }
+
+        activeDrag = null;
+        updateTethers();
+      });
+
+      window.addEventListener('resize', updateTethers);
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeEvidenceModal();
+      });
+
+      // Initialize language & tethers
+      applyMatrixLang();
+      setTimeout(updateTethers, 200);
+    })();
+  </script>
+</main>
+
+<!-- FOOTER HUD -->
+<footer class="w-full bg-surface-container-lowest shadow-[0_-1px_12px_rgba(0,0,0,0.5)] border-t border-outline-variant/20">
+  <div class="w-full px-6 md:px-12 py-3 flex flex-col sm:flex-row items-center justify-between gap-2 font-label-sm text-xs text-on-surface-variant">
+    <div class="flex items-center gap-3">
+      <span class="text-primary font-bold">BUREAU//AI FORENSIC HUD</span>
+      <span class="text-outline-variant">|</span>
+      <span>CASE #001: THE AURORA DIAMOND</span>
+      <span class="text-outline-variant">|</span>
+      <span class="text-secondary">EVIDENCE GROUNDED</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <span>5 NODES LINKED</span>
+      <span class="text-outline-variant">|</span>
+      <span>100% UNBIASED EVALUATION</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
