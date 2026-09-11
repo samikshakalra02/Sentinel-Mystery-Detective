@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="SENTINEL // Mystery Detective Engine" width="100%" />
-
 # 🕵️ SENTINEL — Multi-Agent Forensic Investigation Engine
 
 **Five specialist AI agents. One evidence board. Zero backend. A verdict only a human is allowed to sign off on.**
