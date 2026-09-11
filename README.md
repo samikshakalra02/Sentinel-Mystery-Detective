@@ -114,9 +114,8 @@ Then open `http://localhost:8080` and start the investigation.
 
 ---
 
-## 🏆 Why This Should Win
-
-| What most hackathon entries show | What Sentinel actually ships |
+##  What Makes This Different
+| What most entries show | What Sentinel actually ships |
 |---|---|
 | A single chatbot roleplaying "5 experts" in one prompt | Five genuinely separated reasoning stages with distinct rules |
 | A confidence number with no explanation | A transparent, additive, inspectable probability breakdown |
